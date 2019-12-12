@@ -1,0 +1,41 @@
+addons:
+  apt:
+    packages:
+    - fakeroot
+language: node_js
+node_js:
+- 10
+install:
+- npm install
+script:
+- npm run make
+jobs:
+  include:
+    - stage: OS X
+      os: osx
+      deploy:
+        edge: true
+        provider: releases
+        token:
+          secure: YrO2YUFQp3rygAmZMZFD4r3FFRbBqfxtTyChNvGxEDizenbbtexxFXd5qMF3vcy+wmZylkqaGe0rTGhiqcBXnC9W9AQSVUYEACAYBaS+mdL4c1q86SkfVQtBSUvl3uqsugwzxcxUxiKcKCQe+Mq9L6tR4s87fCWB3nXkaaYLB8TfDlTk2Qy5rBG3N9UD02XAQeaqursthkWvUMlCFDKXeGWWFPoCmM7fZ6vyZF4unaSVS4EZ3itUQHbrjzZ3ZNFuput4pqM5RP3jsTsr4NTrGNiIHazR5Ychk2y7bU/9ycxU/0Y09cAWcvd9F7EyfisSivF7u51p4PdOdG+lq58IXt8ZOT6sYGjGWTJOjGlvQv1ZMJR1l+nDOz4XUjKydISQnsJa4uY8Bchym950Yo/1vZrLKc3aSs53BpZhOaDryMnxFaBrLOsje4Tkkuve9x0t5AXof6giWZE27FqEOnXuzMqy/7jJJ5L/Q4J4L4Fja2YgST37G07Jxw2dr5uRKjiYu5R871nhplIXVc3+Awvgh794+tQ8XKtlpdke4DLECTtmFGweuky3wFnna1Cf60MKNube+mFfxdO8aPdwoOFe3HNrBx48Lcz/9rjrkdQJOaC2FFx1VaenMPs7S+LPeoBmAYPeEhZsM9fux/FNCp+PSLVFzlmrZL5+WG7IZ3Ywf1I=
+        file: out/make/**
+        file_glob: true
+        overwrite: true
+        cleanup: false
+        on:
+          repo: pm98zz-c/tT
+          tags: true
+    - stage: Linux
+      os: linux
+      deploy:
+        edge: true
+        provider: releases
+        token:
+          secure: YrO2YUFQp3rygAmZMZFD4r3FFRbBqfxtTyChNvGxEDizenbbtexxFXd5qMF3vcy+wmZylkqaGe0rTGhiqcBXnC9W9AQSVUYEACAYBaS+mdL4c1q86SkfVQtBSUvl3uqsugwzxcxUxiKcKCQe+Mq9L6tR4s87fCWB3nXkaaYLB8TfDlTk2Qy5rBG3N9UD02XAQeaqursthkWvUMlCFDKXeGWWFPoCmM7fZ6vyZF4unaSVS4EZ3itUQHbrjzZ3ZNFuput4pqM5RP3jsTsr4NTrGNiIHazR5Ychk2y7bU/9ycxU/0Y09cAWcvd9F7EyfisSivF7u51p4PdOdG+lq58IXt8ZOT6sYGjGWTJOjGlvQv1ZMJR1l+nDOz4XUjKydISQnsJa4uY8Bchym950Yo/1vZrLKc3aSs53BpZhOaDryMnxFaBrLOsje4Tkkuve9x0t5AXof6giWZE27FqEOnXuzMqy/7jJJ5L/Q4J4L4Fja2YgST37G07Jxw2dr5uRKjiYu5R871nhplIXVc3+Awvgh794+tQ8XKtlpdke4DLECTtmFGweuky3wFnna1Cf60MKNube+mFfxdO8aPdwoOFe3HNrBx48Lcz/9rjrkdQJOaC2FFx1VaenMPs7S+LPeoBmAYPeEhZsM9fux/FNCp+PSLVFzlmrZL5+WG7IZ3Ywf1I=
+        file: out/make/**
+        file_glob: true
+        overwrite: true
+        cleanup: false
+        on:
+          repo: pm98zz-c/tT
+          tags: true
