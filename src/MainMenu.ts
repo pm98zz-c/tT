@@ -22,20 +22,26 @@ class MenuBuilder {
     }
     return template
   }
+  protected getFileMenuTemplate() {
+    return {
+      label: '&File',
+      role: 'fileMenu',
+      submenu: [
+        {
+          label: '&Quit',
+          role: 'quit',
+          accelerator: 'CommandOrControl+Q'
+        }
+      ]
+    }
+  }
   protected getEditMenuTemplate() {
     return {
-      label: 'Edit',
+      label: '&Edit',
       submenu: [
-        { role: 'undo' },
-        { role: 'redo' },
-        { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { type: 'separator' },
         {
-          label: 'Preferences',
-          accelerator: 'cmd+,', // shortcut
+          label: '&Preferences',
+          accelerator: 'CommandOrControl+P',
           click: () => {
             let prefsWindow = new BrowserWindow({ width: 800, height: 500, titleBarStyle: 'hidden', backgroundColor: '#eee' })
             prefsWindow.setMenuBarVisibility(false)
@@ -52,7 +58,7 @@ class MenuBuilder {
   
   protected getViewMenuTemplate() {
     return {
-      label: 'View',
+      label: '&View',
       submenu: [
         { role: 'reload' },
         { role: 'forcereload' },
@@ -66,19 +72,10 @@ class MenuBuilder {
       ]
     }
   }
-  protected getFileMenuTemplate() {
-    return {
-      label: '&File',
-      role: 'fileMenu',
-      submenu: [
-        { label: '&Quit',
-          role: 'quit'
-        }
-      ]
-    }
-  }
+  
   protected getHelpMenuTemplate() {
     return {
+      label: '&Help',
       role: 'help',
       submenu: [
         {
