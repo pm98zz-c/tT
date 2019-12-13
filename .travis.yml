@@ -2,6 +2,7 @@ addons:
   apt:
     packages:
     - fakeroot
+    - rpm
 language: node_js
 node_js:
 - 10
