@@ -18,7 +18,7 @@ class Event extends EventEmitter {
       let window = require('electron').BrowserWindow;
       window.getAllWindows()[0].webContents.send(eventName, ...args)
     } else {
-      //@todo
+      this.ipc.send(eventName, ...args)
     }
   }
 }

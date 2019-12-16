@@ -1,6 +1,7 @@
 import MainMenu from './MainMenu'
 import Storage from './Storage'
 import eventDispatcher from './Event'
+import TasksListBuilder from './TasksList/TasksListBuilder'
 const BrowserWindow = require('electron').BrowserWindow
 const shell = require('electron').shell
 
@@ -17,8 +18,8 @@ class tT {
     this.app.on('ready', () => {
       this.windowInit()
       MainMenu.init()
-    }
-    )
+      eventDispatcher.broadcast('appLaunched')
+    })
     this.app.on('window-all-closed', () => {
       this.quit()
     })
@@ -48,7 +49,7 @@ class tT {
     this.mainWindow = new BrowserWindow({ "x": x, "y": y, "width": width, "height": height, backgroundColor: '#eee' })
     this.mainWindow.loadFile('src/index.html')
     this.windowEvents()
-    eventDispatcher.on('preferencesChanged', () =>{
+    eventDispatcher.on('preferencesChanged', () => {
       this.mainWindow.reload()
     })
   }
@@ -67,4 +68,5 @@ class tT {
 
   }
 }
+new TasksListBuilder()
 new tT()
