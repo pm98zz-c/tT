@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pm98zz-c/tT.svg?branch=master)](https://travis-ci.org/pm98zz-c/tT.svg?branch=master)
+
 # tT
 A simple Time Tracker.
 It aims to stay basic and intuitive, with a focus on keyboard usage.
