@@ -15,3 +15,5 @@ To delete an existing time entry, either "blank" the task description, or set th
 
 ## Redmine integration
 You can enable pulling tasks from a Redmine server by entering credentials in the Edit > Preferences panels. Note this is uni-directional and only pulls the issues from Redmine for auto-completion. It does NOT create time entries from local records.
+
+You have to generate an API token from your profile (/my/account) on your Redmine instance.
