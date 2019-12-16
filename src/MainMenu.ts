@@ -82,7 +82,7 @@ class MenuBuilder {
           label: 'Learn More',
           click: async () => {
             const { shell } = require('electron')
-            await shell.openExternal('https://electronjs.org')
+            await shell.openExternal('https://github.com/pm98zz-c/tT/blob/master/README.md')
           }
         }
       ]
