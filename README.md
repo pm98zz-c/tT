@@ -4,6 +4,8 @@
 A simple Time Tracker.
 It aims to stay basic and intuitive, with a focus on keyboard usage.
 
+[![Screenshot of tT UI](screenshot-tT.png)](screenshot-tT.png)
+
 ## Installation
 You can download binaries for your platform from https://github.com/pm98zz-c/tT/releases.
 
