@@ -18,5 +18,5 @@ Selects previous entry in the list.
 ## space
 With an entry selected in the list, toggles the edit form for the selected entry
 
-## Ctrl+O / Cmd+O
+## ctrl+O / cmd+O
 When Redmine integration is enabled, opens the issue in an external browser.
