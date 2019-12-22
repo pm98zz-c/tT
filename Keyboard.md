@@ -4,6 +4,9 @@
 In the main view, navigates between the main input toggle and the entry list.
 While editing an individual entry, navigates between form components.
 
+## ctrl+S / cmd+S
+Starts/Stops the current activity, if any.
+
 ## enter
 In the main view, starts/stops the timer.
 With an entry selected in the list, resumes the selected entry.

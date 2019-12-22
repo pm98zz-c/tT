@@ -1,0 +1,27 @@
+ body, #toggle {
+    color:#fff;
+    background:#222;
+  }
+  #current-anime {
+    filter: invert(100%);
+  }
+  a {
+    color: lightblue;
+  }
+  .entry.selected {
+    background: #444;
+  }
+  .entry-edit-wrapper {
+    background: rgba(0,0,0,0.5);
+  }
+  .entry-edit-form {
+    background: #222;
+  }
+  .entry-edit-form input,
+  .entry-edit-form textarea {
+    background: #eee;
+  }
+  #current {
+    background: #444;
+    color: #fff;
+  }

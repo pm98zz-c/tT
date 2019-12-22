@@ -1,12 +1,13 @@
 {
-  "name": "tT",
+  "name": "tt",
   "version": "1.1.0",
   "description": "Simple Time Tracker",
-  "main": "src/tt.ts",
+  "main": "src/main/index.ts",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "repository": "https://github.com/pm98zz_c/tt",
   "keywords": [
@@ -18,55 +19,20 @@
   "license": "GPL-2.0",
   "devDependencies": {
     "@types/electron-store": "^3.2.0",
-    "@types/node": "^12.12.14",
-    "babel-plugin-transform-async-to-generator": "*.*",
-    "babel-plugin-transform-builtin-classes": "*.*",
-    "babel-plugin-transform-custom-element-classes": "*.*",
-    "babel-preset-env": "^*.*",
-    "electron-forge": "*.*",
-    "electron-prebuilt-compile": "*.*",
-    "electron-squirrel-startup": "*.*",
-    "typescript": "^3.7.3"
+    "@types/mousetrap": "^1.6.3",
+    "electron": "^7.1.5",
+    "electron-builder": "^22.2.0",
+    "electron-webpack": "^2.7.4",
+    "electron-webpack-ts": "^3.2.0",
+    "typescript": "^3.7.3",
+    "webpack": "^4.41.3"
   },
   "dependencies": {
-    "@types/mousetrap": "^1.6.3",
-    "electron-compile": "*.*",
-    "electron-preferences": "^2.0.0",
     "electron-store": "^5.1.0",
     "is-electron-renderer": "^2.0.1",
     "mousetrap": "^1.6.3",
     "os-locale": "^4.0.0",
+    "source-map-support": "^0.5.16",
     "uuid": "^3.3.3"
-  },
-  "config": {
-    "forge": {
-      "make_targets": {
-        "darwin": [
-          "dmg"
-        ],
-        "linux": [
-          "deb",
-          "rpm"
-        ]
-      },
-      "electronPackagerConfig": {
-        "packageManager": "npm",
-        "icon": "src/assets/tT.svg",
-        "name": "tT"
-      },
-      "electronWinstallerConfig": {
-        "name": "tT"
-      },
-      "electronInstallerDebian": {},
-      "electronInstallerRedhat": {},
-      "github_repository": {
-        "owner": "",
-        "name": ""
-      },
-      "windowsStoreConfig": {
-        "packageName": "",
-        "name": "tT"
-      }
-    }
   }
 }
