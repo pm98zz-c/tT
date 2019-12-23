@@ -7,9 +7,9 @@ language: node_js
 node_js:
 - 10
 install:
-- npm install
+- yarn install
 script:
-- npm run make
+- yarn dist
 jobs:
   include:
   - stage: OS X
@@ -19,7 +19,7 @@ jobs:
       provider: releases
       token:
         secure: t5HADJrTjxybwnwopekRrgH9Yg5/u8YYdy/93xDRghYSWwOu1musLUAa7eAHZ3si8r3tzkCWS5cmfo2MU1PVdMTG8E2V13+JXKRJbMiX7MXjskLyCUUgWs64fS/AvlnmhI2rJ+OAlw69xsYwMcQGRvBBeUbX184XKrtkgeV380feTgVWLzaBdyLCITnwQxP/6HFFOKXqRTENJrpfBdNxwOeoTQmn1vhzyVPav71I0rulKyJf2d/qo+MgpXtj9mWQYMzX3addmw1j0BlJuBjkZN65pG6/ornYLOnI3AejirD7S0Gl3tWqukWFPm6cnCwiynYbp0fJCl9ikcqqEiDhiPAr0RlC4hqui9DLMz+BAjnFb2F6bEtKl9uBSXKHmO1qH/3vbrWxGDE3vxLMtw8AJtXGwfczRDPDyhfEuxI4oqq4Jnwq9HL3hRcpH/rK2Ce2HkradeUM/goylHc/xLh18zaGeMMdk3NJp4hnMg+Ti5eEYJpHyM6aWpLMa3KoxDQdom1TCBfmasgIW2HOGqnIx2Oe0rf1r5LXquGZvy0+ZPLWsCcugZNwaz4DTe7JlcI1Ksfz81DTWtw0uzDX/IKtPbEMqmEXz/bnnhzVnzvPawhX8Gw+BkRWJzabTEZViu958TuB1L9pNU79FcNZ99P1DtXlLEDmafrFRx40/HXwhVw=
-      file: out/make/**
+      file: dist/tt_**
       file_glob: true
       overwrite: true
       cleanup: false
@@ -33,7 +33,7 @@ jobs:
       provider: releases
       token:
         secure: t5HADJrTjxybwnwopekRrgH9Yg5/u8YYdy/93xDRghYSWwOu1musLUAa7eAHZ3si8r3tzkCWS5cmfo2MU1PVdMTG8E2V13+JXKRJbMiX7MXjskLyCUUgWs64fS/AvlnmhI2rJ+OAlw69xsYwMcQGRvBBeUbX184XKrtkgeV380feTgVWLzaBdyLCITnwQxP/6HFFOKXqRTENJrpfBdNxwOeoTQmn1vhzyVPav71I0rulKyJf2d/qo+MgpXtj9mWQYMzX3addmw1j0BlJuBjkZN65pG6/ornYLOnI3AejirD7S0Gl3tWqukWFPm6cnCwiynYbp0fJCl9ikcqqEiDhiPAr0RlC4hqui9DLMz+BAjnFb2F6bEtKl9uBSXKHmO1qH/3vbrWxGDE3vxLMtw8AJtXGwfczRDPDyhfEuxI4oqq4Jnwq9HL3hRcpH/rK2Ce2HkradeUM/goylHc/xLh18zaGeMMdk3NJp4hnMg+Ti5eEYJpHyM6aWpLMa3KoxDQdom1TCBfmasgIW2HOGqnIx2Oe0rf1r5LXquGZvy0+ZPLWsCcugZNwaz4DTe7JlcI1Ksfz81DTWtw0uzDX/IKtPbEMqmEXz/bnnhzVnzvPawhX8Gw+BkRWJzabTEZViu958TuB1L9pNU79FcNZ99P1DtXlLEDmafrFRx40/HXwhVw=
-      file: out/make/**
+      file: dist/tt_**
       file_glob: true
       overwrite: true
       cleanup: false
