@@ -152,9 +152,9 @@ class Toggle {
     form.id = 'toggle'
     form.classList.add('iddle')
     form.appendChild(this.toggleInput)
-    form.appendChild(this.currentInput)
-    form.appendChild(this.getCurrentAnime())
     form.appendChild(this.toggleSubmit)
+    form.appendChild(this.getCurrentAnime())
+    form.appendChild(this.currentInput)
     form.appendChild(this.description)
     return form
   }
