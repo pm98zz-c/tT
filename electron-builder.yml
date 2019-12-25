@@ -7,11 +7,9 @@ linux:
   icon: icons
   category: Office
   synopsis: Simple Time Tracker
-  publish: never
 mac:
   target:
     - target: dmg
       arch: x64
   category: public.app-category.productivity
   icon: icons
-  publish: never
