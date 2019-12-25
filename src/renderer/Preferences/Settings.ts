@@ -1,4 +1,4 @@
-import Prefs from '../../common/Preferences/Preferences'
+import Prefs from './Preferences'
 class Settings {
   public render() {
     Prefs.list().forEach((group) => {
@@ -10,10 +10,13 @@ class Settings {
       let inner = document.createElement('div')
       inner.classList.add('fieldset')
       fieldset.appendChild(inner)
-      group.fields.forEach((field) => {
+      group.fields.forEach((field: any) => {
         switch (field.type) {
           case 'radios':
             inner.appendChild(this.generateRadios(field))
+            break
+          case 'checkboxes':
+            inner.appendChild(this.generateCheckboxes(field))
             break
           default:
             inner.appendChild(this.generateInput(field))
@@ -56,7 +59,7 @@ class Settings {
       radio.setAttribute('name', field.key)
       radio.setAttribute('id', option.key)
       radio.value = option.key
-      if (initialValue === option.key){
+      if (initialValue === option.key) {
         radio.setAttribute('checked', 'true')
       }
       radio.addEventListener('change', () => {
@@ -67,6 +70,43 @@ class Settings {
       radioLabel.setAttribute('for', option.key)
       radioLabel.innerText = option.label
       inner.appendChild(radioLabel)
+      wrapper.appendChild(inner)
+    })
+
+    return wrapper
+  }
+  private generateCheckboxes(field: any): HTMLDivElement {
+    const checkboxes: Array<HTMLInputElement> = []
+    let wrapper = document.createElement('div')
+    wrapper.classList.add('checkboxes')
+    let label = document.createElement('legend')
+    label.innerText = field.label
+    wrapper.appendChild(label)
+    let initialValue = Prefs.get(field.key) ? Prefs.get(field.key) : field.default
+    console.log(initialValue)
+    field.options.forEach((option: any) => {
+      let inner = document.createElement('div')
+      let checkbox = document.createElement('input')
+      checkbox.setAttribute('type', 'checkbox')
+      checkbox.setAttribute('name', field.key)
+      checkbox.setAttribute('id', option.key)
+      if(initialValue[option.key]){
+        checkbox.setAttribute('checked', 'true')
+      }
+      checkbox.value = option.key
+      checkbox.addEventListener('change', () => {
+        let settings = new Map<string, boolean>()
+        checkboxes.forEach((element) => {
+          settings.set(element.value, element.checked)
+        })
+        Prefs.set(field.key, Object.fromEntries(settings.entries()))
+      })
+      checkboxes.push(checkbox)
+      inner.appendChild(checkbox)
+      let checkboxLabel = document.createElement('label')
+      checkboxLabel.setAttribute('for', option.key)
+      checkboxLabel.innerText = option.label
+      inner.appendChild(checkboxLabel)
       wrapper.appendChild(inner)
     })
 

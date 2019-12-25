@@ -1,8 +1,7 @@
 import RedmineSyncBase from './RedmineSyncBase'
 import eventDispatcher from '../../common/Event'
-import Task from '../../common/Task/Task';
+import Task from '../Task/Task';
 import RedmineStorage from './StorageProject'
-import Prefs from '../../common/Preferences/Preferences'
 import RedmineIssue from './RedmineIssue';
 
 interface redmineIssuesResponse {
@@ -25,12 +24,11 @@ interface redmineProjectItem {
 }
 class RedmineSyncIssues extends RedmineSyncBase {
   protected lastRunName: string = 'redmineSyncIssues'
-  
+
   protected attachEvents() {
     eventDispatcher.addListener('RedmineIssueSaved', (id: number) => {
       let issue = new RedmineIssue(id)
-      let task = new Task('')
-      task.loadByName(issue.getName())
+      let task = new Task(issue.getName())
       task.setName(issue.getName())
       task.save()
     })
@@ -38,13 +36,16 @@ class RedmineSyncIssues extends RedmineSyncBase {
 
   protected fetch() {
     let url = this.redmineServer + '/issues.json?limit=100&offset=' + this.pass * 100 + '&sort=updated_on&updated_on=%3E%3D' + this.lastRun + '&key=' + this.apiKey
+    if(this.display.redmineDisplayAllIssues === false){
+      url += '&assigned_to_id=me'
+    }
     this.request(url).then((data: redmineIssuesResponse) => {
       if (data.hasOwnProperty('issues')) {
         data.issues!.forEach(element => {
           this.syncIssue(element)
         })
         if (data.issues?.length == 0) {
-          eventDispatcher.broadcast('redmineProjectsSyncronized')
+          eventDispatcher.emit('redmineIssuesSyncronized')
         } else {
           this.pass = this.pass + 1
           this.fetch()
@@ -58,19 +59,20 @@ class RedmineSyncIssues extends RedmineSyncBase {
     task.setName(element.subject)
     if (task.setName(element.subject) && task.save()) {
       this.lastRun = this.increment(element.updated_on)
-      Prefs.set(this.lastRunName, this.lastRun)
+      localStorage.setItem(this.lastRunName, this.lastRun)
+      return true
     } else {
       // Retrigger a project sync.
-      eventDispatcher.broadcast('redmineProjectsNeedSync')
-      return
+      eventDispatcher.emit('redmineProjectsNeedSync')
+      return false
     }
   }
-  
 
-  
-    /**
-   * Remove tasks older than a month.
-   */
+
+
+  /**
+ * Remove tasks older than a month.
+ */
   protected cleanOldTasks() {
     let before = new Date()
     before.setMonth(before.getMonth() - 1)
@@ -82,7 +84,7 @@ class RedmineSyncIssues extends RedmineSyncBase {
       }
     })
   }
-  
+
 }
 
 export default RedmineSyncIssues

@@ -1,4 +1,4 @@
-import eventDispatcher from '../Event'
+import eventDispatcher from '../../common/Event'
 import Storage from './Storage'
 const uuid = require('uuid/v1')
 class Task {
@@ -21,9 +21,14 @@ class Task {
   }
 
   public save() {
+    //@todo this should not happen.
+    if(this.name.length < 0){
+      this.delete()
+      return
+    } 
     this.updated = new Date()
     Storage.set(this.id, this)
-    eventDispatcher.broadcast('taskSaved', this.id)
+    eventDispatcher.emit('taskSaved', this.id)
   }
 
   public load(id: string): boolean {
@@ -49,7 +54,7 @@ class Task {
     if (Storage.has(this.id)) {
       Storage.delete(this.id)
     }
-    eventDispatcher.broadcast('taskDeleted', this.id)
+    eventDispatcher.emit('taskDeleted', this.id)
   }
   public getId() {
     return this.id

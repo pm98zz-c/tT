@@ -1,27 +1,46 @@
-import Prefs from '../../common/Preferences/Preferences'
+import Prefs from '../Preferences/Preferences'
+import StorageIssue from './StorageIssue'
+import StorageProject from './StorageProject'
+import Utils from '../Utils'
 const https = require('https')
 
-
-//@todo we should not store last run in prefs.
 abstract class RedmineSyncBase {
-  protected redmineServer: string = Prefs.get('redmineUrl')
+  protected redmineServer: string = Utils.rtrim(Prefs.get('redmineUrl'), '/')
   protected apiKey: string = Prefs.get('redmineToken')
   protected lastRun: string = ''
   protected lastRunName: string = ''
   protected pass: number = 0
+  protected display = {
+    redmineDisplayMyIssues: true,
+    redmineDisplayAllIssues: false,
+    redmineDisplayProjects: true
+  }
   constructor(){
+    this.initPrefs()
     this.attachEvents()
   }
   public sync() {
     this.pass = 0
-    if (Prefs.get(this.lastRunName)) {
-      this.lastRun = <string>Prefs.get(this.lastRunName)
+    if (localStorage.getItem(this.lastRunName)) {
+      this.lastRun = <string>localStorage.getItem(this.lastRunName)
     } else {
       let date = new Date()
       date.setMonth(date.getMonth() - 1)
       this.lastRun = date.toISOString().substring(0, 10)
     }
     this.fetch()
+  }
+
+  protected initPrefs(){
+    this.display = Prefs.get('redmineDisplay')
+  }
+
+  public reset(){
+    this.lastRun = ''
+    localStorage.removeItem(this.lastRunName)
+    StorageIssue.clear()
+    StorageProject.clear()
+    this.initPrefs()
   }
 
   protected attachEvents() {
@@ -62,16 +81,23 @@ abstract class RedmineSyncBase {
             let parsed = JSON.parse(Buffer.concat(body).toString())
             resolve(parsed)
           } catch (e) {
+            // this.credentialsError()
             reject(e)
           }
         })
       })
       request.on('error', (error:any) =>{
+        // this.credentialsError()
         reject(error)
       })
       request.end()
     })
   }
+  // protected credentialsError(){
+  //   // this won't work.
+  //   alert('Invalid parameters for Redmine integration. Please check the Settings in Preferences.')
+  //   localStorage.setItem(this.lastRunName, 'disabled')
+  // }
 }
 
 export default RedmineSyncBase

@@ -38,7 +38,7 @@ class RedmineProject {
       return false
     }
     Storage.set('p-' + this.id, this)
-    eventDispatcher.broadcast('redmineProjectSaved', this.id)
+    eventDispatcher.emit('redmineProjectSaved', this.id)
     return true
   }
 

@@ -1,8 +1,8 @@
 const BrowserWindow = require('electron').BrowserWindow
-import eventDispatcher from '../../common/Event'
-import Storage from '../Storage'
+import Storage from './Storage'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
+const ipc = require('electron').ipcMain
 const isDevelopment = process.env.NODE_ENV !== 'production'
 class PreferencesWindow {
   public trigger() {
@@ -35,11 +35,16 @@ class PreferencesWindow {
     }
     prefsWindow.setMenuBarVisibility(false)
     prefsWindow.show()
-    prefsWindow.on('closed', () => {
-      eventDispatcher.broadcast('preferencesWindowClosed')
+    // prefsWindow.on('closed', () => {
+    //   eventDispatcher.emit('preferencesWindowClosed')
+    // })
+    ipc.on('preferencesChanged', (event: Event, key: string) => {
+      BrowserWindow.getAllWindows().forEach((window: any) => {
+        window.webContents.send('preferencesChanged', key)
+      })
     })
     prefsWindow.webContents.on('dom-ready', () => {
-      eventDispatcher.broadcast('appLaunched', 'preferences')
+      prefsWindow.webContents.send('appLaunched', 'preferences')
     })
   }
 }

@@ -1,4 +1,4 @@
-import Entry from '../../common/Entry/Entry'
+import Entry from '../Entry/Entry'
 import EntryEdit from './EntryEdit'
 import eventDispatcher from '../../common/Event'
 class EntryUI {
@@ -138,11 +138,11 @@ class EntryUI {
     this.ensureWrapper()
     // Try first to order.
     if (this.appendEntryAbove()) {
-      eventDispatcher.broadcast('EntryUIRendered', this.entryElement)
+      eventDispatcher.emit('EntryUIRendered', this.entryElement)
       return
     }
     this.wrapper.appendChild(this.entryElement)
-    eventDispatcher.broadcast('EntryUIRendered', this.entryElement)
+    eventDispatcher.emit('EntryUIRendered', this.entryElement)
   }
   protected appendEntryAbove(): boolean {
     let existingEntries = this.wrapper.getElementsByClassName('entry')

@@ -1,6 +1,6 @@
 import eventDispatcher from '../../common/Event'
-import EntryStorage from '../../common/Entry/Storage'
-import Entry from '../../common/Entry/Entry'
+import EntryStorage from '../Entry/Storage'
+import Entry from '../Entry/Entry'
 import EntryUI from './EntryUI'
 const Mousetrap = require('mousetrap')
 class EntriesList {
@@ -130,7 +130,7 @@ class EntriesList {
     if (null !== selected) {
       let task: HTMLParagraphElement | null = selected.querySelector('p.entry-task')
       if (null !== task) {
-        eventDispatcher.broadcast('entrySelectedInList', task.innerText)
+        eventDispatcher.emit('entrySelectedInList', task.innerText)
       }
     }
     this.unSelect()

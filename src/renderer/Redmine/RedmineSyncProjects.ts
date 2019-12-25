@@ -1,6 +1,6 @@
 import RedmineSyncBase from './RedmineSyncBase'
 import eventDispatcher from '../../common/Event'
-import Task from '../../common/Task/Task'
+import Task from '../Task/Task'
 import RedmineProject from './RedmineProject'
 
 interface redmineProjectsResponse {
@@ -20,10 +20,13 @@ class RedmineSyncProjects extends RedmineSyncBase {
   protected attachEvents() {
     eventDispatcher.addListener('redmineProjectSaved', (id: number) => {
       let project = new RedmineProject(id)
-      let task = new Task('')
-      task.loadByName(project.getName())
+      let task = new Task(project.getName())
       task.setName(project.getName())
-      task.save()
+      if (this.display.redmineDisplayProjects === false) {
+        task.delete()
+      } else {
+        task.save()
+      }
     })
   }
 
@@ -35,7 +38,7 @@ class RedmineSyncProjects extends RedmineSyncBase {
           this.syncProject(element)
         })
         if (data.projects?.length == 0) {
-          eventDispatcher.broadcast('redmineProjectsSyncronized')
+          eventDispatcher.emit('redmineProjectsSyncronized')
         } else {
           this.pass = this.pass + 1
           this.fetch()

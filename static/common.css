@@ -9,7 +9,6 @@
 body {
   padding: 2%;
   padding-top: 0;
-  background: #eee;
 }
 
 #toggle {
@@ -18,7 +17,6 @@ body {
   margin-bottom: 1%;
   position: fixed;
   width: 96%;
-  background: #eee;
   z-index: 1;
 }
 #toggle textarea {
@@ -54,8 +52,6 @@ button:disabled{
 }
 #current {
   border: 1px solid #eee;
-  background: #fff;
-  color: #000;
   opacity: 0.5;
 }
 #current-anime {
@@ -84,9 +80,7 @@ button:disabled{
   font-size: 1.2em;
   width: 100%;
 }
-.entry.selected{
-  background: #fff;
-}
+
 .entry-task{
   width: 95%;
 }
@@ -119,7 +113,6 @@ button:disabled{
   right:0;
   bottom: 0;
   z-index: 1;
-  background: rgba(0,0,0,0.5);
 }
 .entry-edit-form {
   width: 70%;
@@ -127,7 +120,6 @@ button:disabled{
   z-index: 2;
   top: 15%;
   left: 15%;
-  background: #fff;
   border: 1px solid;
   padding:1em;
 }
@@ -178,11 +170,10 @@ textarea {
 .entry-description {
   font-size: 70%;
 }
-a {
-  color: coral;
-}
+
 
 div.fieldset div.input,
+div.fieldset div.checkboxes,
 div.fieldset div.radios{
   padding: 1em;
   display: grid;
@@ -196,13 +187,14 @@ div.fieldset div.input label {
   margin-bottom: 1em;
   border-bottom: 1px dotted;
 }
-div.fieldset div.input input{
+div.fieldset div.input input {
   display: block;
   grid-column-start: 2;
   grid-column-end: 2;
   margin-bottom: 1em;
 }
 
+div.fieldset div.checkboxes > legend,
 div.fieldset div.radios > legend {
   display: block;
   grid-column-start: 1;
@@ -210,6 +202,7 @@ div.fieldset div.radios > legend {
   margin-bottom: 1em;
   border-bottom: 1px dotted;
 }
+div.fieldset div.checkboxes div,
 div.fieldset div.radios div {
   display: block;
   grid-column-start: 1;

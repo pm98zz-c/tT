@@ -1,0 +1,24 @@
+html, body, #toggle {
+    color:#000;
+    background: #eee;
+  }
+  a {
+    color: coral;
+  }
+  .entry.selected {
+    background: #fff;
+  }
+  .entry-edit-wrapper {
+  background: rgba(0,0,0,0.5);
+  }
+  .entry-edit-form {
+    background: #fff;
+  }
+  .entry-edit-form input,
+  .entry-edit-form textarea {
+    background: #fff;
+  }
+  #current {
+  background: #fff;
+  color: #000;
+  }

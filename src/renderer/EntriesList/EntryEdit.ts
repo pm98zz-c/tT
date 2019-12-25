@@ -1,6 +1,6 @@
-import Entry from '../../common/Entry/Entry';
+import Entry from '../Entry/Entry';
 import TasksList from '../TasksList/TasksList'
-import Utils from '../../common/Utils'
+import Utils from '../Utils'
 const Mousetrap = require('mousetrap')
 class EntryEdit {
 

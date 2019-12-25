@@ -1,7 +1,7 @@
 import eventDispatcher from '../../common/Event'
-import Entry from '../../common/Entry/Entry'
+import Entry from '../Entry/Entry'
 import TasksList from '../TasksList/TasksList'
-import Utils from '../../common/Utils'
+import Utils from '../Utils'
 const Mousetrap = require('mousetrap')
 //@see https://github.com/electron-userland/electron-webpack/issues/172
 declare const __static: string
@@ -24,7 +24,7 @@ class Toggle {
     eventDispatcher.on('windowLoaded', () => {
       this.attachEvents()
       this.render()
-      eventDispatcher.broadcast('toggleLoaded')
+      eventDispatcher.emit('toggleLoaded')
       this.toggleInput.focus()
     })
   }
@@ -46,7 +46,7 @@ class Toggle {
       // Last of our elements, release nav.
       if (this.toggleSubmit === document.activeElement) {
         this.toggleSubmit.blur()
-        eventDispatcher.broadcast('toggleFocusReleased')
+        eventDispatcher.emit('toggleFocusReleased')
         return false
       }
       // Move to submit, or release if no running task.
@@ -57,7 +57,7 @@ class Toggle {
         }
         // No other component we can select, release.
         this.toggleInput.blur()
-        eventDispatcher.broadcast('toggleFocusReleased')
+        eventDispatcher.emit('toggleFocusReleased')
         return false
       }
       // Move to input. 
@@ -69,18 +69,18 @@ class Toggle {
       // We're not focused, but running. grab focus.
       if(this.currentEntry instanceof Entry){
         this.description.focus()
-        eventDispatcher.broadcast('toggleFocusGrabbed')
+        eventDispatcher.emit('toggleFocusGrabbed')
         return false
       }
       // Grab focus on input.
       this.toggleInput.value = ''
       this.toggleInput.focus()
-      eventDispatcher.broadcast('toggleFocusGrabbed')
+      eventDispatcher.emit('toggleFocusGrabbed')
       return false
     })
     Mousetrap(document.body).bind('mod+s', () => {
       this.toggle()
-      eventDispatcher.broadcast('toggleFocusGrabbed')
+      eventDispatcher.emit('toggleFocusGrabbed')
     })
   }
   private render() {

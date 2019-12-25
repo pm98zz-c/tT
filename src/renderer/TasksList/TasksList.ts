@@ -1,5 +1,5 @@
 import eventDispatcher from '../../common/Event'
-import Storage from '../../common/TasksList/Storage'
+import Storage from './Storage'
 class TasksList {
   protected datalist: HTMLDataListElement
   protected list: Array<string> = []

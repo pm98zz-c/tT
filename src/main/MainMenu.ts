@@ -1,4 +1,4 @@
-import PreferencesWindow from './Preferences/PreferencesWindow'
+import PreferencesWindow from './PreferencesWindow'
 class MenuBuilder {
   protected shell = require('electron').shell
   protected Menu = require('electron').Menu

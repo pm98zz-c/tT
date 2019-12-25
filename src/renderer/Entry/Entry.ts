@@ -1,4 +1,4 @@
-import eventDispatcher from '../Event'
+import eventDispatcher from '../../common/Event'
 import Storage from './Storage'
 import Utils from '../Utils'
 const uuid = require('uuid/v1')
@@ -45,13 +45,13 @@ class Entry {
       return this.delete()
     }
     Storage.set(this.id, this)
-    eventDispatcher.broadcast('entrySaved', this.id)
+    eventDispatcher.emit('entrySaved', this.id)
   }
   public delete(){
     if(Storage.has(this.id)){
       Storage.delete(this.id)
     }
-    eventDispatcher.broadcast('entryDeleted', this.id)
+    eventDispatcher.emit('entryDeleted', this.id)
   }
   public load(id: string) {
     this.id = id

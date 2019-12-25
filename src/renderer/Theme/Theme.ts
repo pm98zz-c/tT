@@ -1,18 +1,14 @@
-import Prefs from '../../common/Preferences/Preferences'
-import eventDispatcher from '../../common/Event'
+import Prefs from '../Preferences/Preferences'
 //@see https://github.com/electron-userland/electron-webpack/issues/172
 declare const __static: string
-
+const ipc = require('electron').ipcRenderer
 class Theme{
   public init(){
     this.apply()
-    eventDispatcher.addListener('preferencesChanged', (key: string) =>{
+    ipc.on('preferencesChanged', (event: Event, key: string) =>{
       if(key === 'theme'){
         this.apply()
       }
-    })
-    eventDispatcher.addListener('preferencesWindowClosed', () =>{
-        this.apply()
     })
   }
   private apply(){

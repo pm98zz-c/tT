@@ -1,18 +1,20 @@
 import eventDispatcher from '../../common/Event'
-import TaskStorage from '../../common/Task/Storage'
-import Entry from '../../common/Entry/Entry'
-import Task from '../../common/Task/Task'
-import Storage from '../../common/TasksList/Storage'
+import TaskStorage from '../Task/Storage'
+import Entry from '../Entry/Entry'
+import Task from '../Task/Task'
+import Storage from './Storage'
 class TasksListBuilder {
-  protected deferred: NodeJS.Timeout
+  protected deferred: number
   public constructor() {
-    this.deferred = setTimeout(this.buildList.bind(this), 1000)
+    this.deferred = window.setTimeout(this.buildList.bind(this), 1000)
     eventDispatcher.addListener('windowLoaded', () => {
       this.attachEvents()
-      setTimeout(this.cleanUpTasks.bind(this), 100000)
+      setTimeout(() => {
+        window.requestIdleCallback(this.cleanUpTasks.bind(this))
+      }, 100000)
     })
   }
-  protected async cleanUpTasks() {
+  protected cleanUpTasks() {
     // We'll delete entries older than a month.
     let before = new Date()
     before.setMonth(before.getMonth() - 1)
@@ -26,7 +28,7 @@ class TasksListBuilder {
     })
   }
   protected attachEvents() {
-    eventDispatcher.on('entrySaved', (event: Event, id: string) => {
+    eventDispatcher.on('entrySaved', (id: string) => {
       let entry = new Entry()
       entry.load(id)
       let task = new Task('')
@@ -38,8 +40,11 @@ class TasksListBuilder {
     // Defer the rebuild to avoid UI freeze.
     eventDispatcher.addListener('taskSaved', () => {
       clearTimeout(this.deferred)
-      this.deferred = setTimeout(this.buildList.bind(this), 1000 * 2)
+      this.deferred = window.setTimeout(this.buildList.bind(this), 1000 * 5)
     })
+  }
+  protected buildListDeferred(): void {
+    window.requestIdleCallback(this.buildList.bind(this))
   }
   protected buildList(): void {
     let list: Array<string> = []
@@ -50,7 +55,7 @@ class TasksListBuilder {
     Storage.store = {
       tasks: list
     }
-    eventDispatcher.broadcast('taskListRebuilt')
+    eventDispatcher.emit('taskListRebuilt')
   }
 
 }

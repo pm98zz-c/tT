@@ -1,5 +1,7 @@
 import Storage from './Storage'
-import eventDispatcher from '../../common/Event'
+const ipc = require('electron').ipcRenderer
+
+
 class Preferences {
   /**
    * @todo defer to components/plugins.
@@ -17,8 +19,23 @@ class Preferences {
         {
           key: 'redmineToken',
           label: 'Redmine API token',
-          type: 'text',
+          type: 'password',
           default: ''
+        },
+        {
+          key: 'redmineDisplay',
+          label: 'Show',
+          type: 'checkboxes',
+          default: {
+            redmineDisplayMyIssues: true,
+            redmineDisplayAllIssues: false,
+            redmineDisplayProjects: true
+          },
+          options: [
+            { key: 'redmineDisplayMyIssues', label: 'My issues' },
+            { key: 'redmineDisplayAllIssues', label: 'All issues' },
+            { key: 'redmineDisplayProjects', label: 'Projects' }
+          ]
         }
       ]
     },
@@ -38,13 +55,23 @@ class Preferences {
       ]
     }
   ]
+  private defaultValues: Map<string, any>
+  constructor() {
+    this.defaultValues = new Map<string, any>()
+    this.definitions.forEach((group) => {
+      group.fields.forEach((field: any) => {
+        this.defaultValues.set(field.key, field.default)
+      })
+    })
+  }
+
   //@todo validate and default values.
   public get(key: string) {
-    return Storage.get(key)
+    return Storage.get(key, this.defaultValues.get(key))
   }
   public set(key: string, value: any) {
     Storage.set(key, value)
-    eventDispatcher.broadcast('preferencesChanged', key)
+    ipc.send('preferencesChanged', key)
   }
   public list() {
     return this.definitions

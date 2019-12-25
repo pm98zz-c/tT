@@ -39,7 +39,7 @@ class RedmineIssue {
     }
     this.updated = new Date()
     Storage.set('t-' + this.id, this)
-    eventDispatcher.broadcast('RedmineIssueSaved', this.id)
+    eventDispatcher.emit('RedmineIssueSaved', this.id)
     return true
   }
 
@@ -58,7 +58,7 @@ class RedmineIssue {
     if (Storage.has(this.id)) {
       Storage.delete(this.id)
     }
-    eventDispatcher.broadcast('RedmineIssueDeleted', this.id)
+    eventDispatcher.emit('RedmineIssueDeleted', this.id)
   }
   public getId() {
     return this.id

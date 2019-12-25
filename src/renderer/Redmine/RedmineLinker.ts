@@ -1,5 +1,5 @@
 import eventDispatcher from '../../common/Event'
-import Prefs from '../../common/Preferences/Preferences'
+import Prefs from '../Preferences/Preferences'
 class RedmineLinker{
   protected redmineServer: string = Prefs.get('redmineUrl')
   public constructor(){
