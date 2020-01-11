@@ -120,7 +120,13 @@ class Toggle {
       TasksList.disable()
     })
     Mousetrap(this.toggleInput).bind('enter', () => {
-      TasksList.getSelection()
+      let selection = TasksList.getSelection()
+      if(selection.length > 0){
+        this.toggleInput.value = selection
+        TasksList.disable()
+        return false
+      }
+      return true
     })
   }
   private render() {
@@ -205,15 +211,14 @@ class Toggle {
     this.toggleInput.value = ''
     Utils.autoGrowTextArea(this.description)
     this.makeSticky()
-    this.toggleInput.focus()
     if (val.length) {
       this.start(val)
-      this.description.focus()
     }
     this.toggleCurrent()
     this.toggleSubmitText()
   }
   private stop() {
+    this.toggleInput.focus()
     if (this.currentEntry instanceof Entry) {
       this.currentEntry.setEnd(new Date())
       this.currentEntry.setDescription(this.description.value)
@@ -227,6 +232,7 @@ class Toggle {
     this.toggleInput.value = ''
     this.description.value = ''
     this.description.removeAttribute('disabled')
+    this.description.focus()
   }
   private toggleSubmitText() {
     let val = this.toggleInput.value

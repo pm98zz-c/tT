@@ -55,20 +55,21 @@ class TasksList {
   }
   public disable() {
     this.datalist.classList.remove('active')
-    Mousetrap.unbind('enter')
+    this.datalist.innerHTML = ''
   }
-  public getSelection() {
+  public getSelection():string {
+    let selection = ''
     this.datalist.querySelectorAll('.selected').forEach((selected) => {
       if (selected instanceof HTMLLIElement) {
-        eventDispatcher.emit('taskAutocompleteSelected', selected.innerText)
+        selection = selected.innerText
       }
     })
+    return selection
   }
   public enable() {
     this.datalist.classList.add('active')
   }
   private select(elem: HTMLLIElement) {
-    Mousetrap.unbind('enter')
     this.datalist.querySelectorAll('.selected').forEach((selected) => {
       selected.classList.remove('selected')
     })
