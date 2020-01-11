@@ -45,7 +45,7 @@ class EntryUI {
   protected getEntryDescriptionElement(): HTMLDivElement {
     let element = document.createElement('div')
     element.classList.add('entry-description')
-    element.innerHTML = this.entry.getDescription()
+    element.innerHTML = this.entry.getDescription().replace(/\n/g, '<br/>')
     return element
   }
   protected getWrapperElement(): HTMLDivElement {
