@@ -213,3 +213,32 @@ div.fieldset div.radios div {
   grid-column-start: 1;
   grid-column-end: 3;
 }
+#task-list {
+  display: none;
+  position: absolute;
+  width: 100%;
+  background: #fff;
+  border: 1px solid;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 2;
+  margin-top: -0.5em;
+}
+#task-list.active {
+  display: block;
+}
+#task-list li {
+  display: block;
+  border-bottom: 1px solid #ccc;
+  padding: 0.2em;
+}
+#task-list li {
+  cursor: pointer;
+}
+#task-list li.selected {
+  background: #eee;
+}
+#task-list li:last-of-type {
+  border-bottom: none;
+}

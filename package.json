@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "electron-store": "^5.1.0",
+    "fuzzysort": "^1.1.4",
     "is-electron-renderer": "^2.0.1",
     "mousetrap": "^1.6.3",
     "os-locale": "^4.0.0",

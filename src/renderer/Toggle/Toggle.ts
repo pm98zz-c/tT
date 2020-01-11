@@ -33,6 +33,11 @@ class Toggle {
       this.toggleInput.value = entryTask
       this.toggleInput.focus()
     })
+    eventDispatcher.on('taskAutocompleteSelected', (entryTask: string) => {
+      this.toggleInput.value = entryTask
+      this.toggleInput.focus()
+      TasksList.disable()
+    })
     this.toggleInput.addEventListener('input', () => {
       TasksList.populateDatalist(this.toggleInput.value)
       this.toggleSubmitText()
@@ -41,11 +46,11 @@ class Toggle {
       this.toggle()
       event.preventDefault()
     })
-    
-    Mousetrap(document.body).bind(['tab', 'shift+tab'], () => {
+
+    Mousetrap(document.body).bind(['tab'], () => {
       // Last of our elements, release nav.
-      if (this.toggleSubmit === document.activeElement) {
-        this.toggleSubmit.blur()
+      if (this.description === document.activeElement) {
+        this.description.blur()
         eventDispatcher.emit('toggleFocusReleased')
         return false
       }
@@ -61,15 +66,9 @@ class Toggle {
         return false
       }
       // Move to input. 
-      if (this.description === document.activeElement) {
-        this.toggleInput.focus()
-        return false
-      }
-      
-      // We're not focused, but running. grab focus.
-      if(this.currentEntry instanceof Entry){
+      if (this.toggleSubmit === document.activeElement) {
+        this.toggleSubmit.blur()
         this.description.focus()
-        eventDispatcher.emit('toggleFocusGrabbed')
         return false
       }
       // Grab focus on input.
@@ -78,14 +77,56 @@ class Toggle {
       eventDispatcher.emit('toggleFocusGrabbed')
       return false
     })
+    Mousetrap(document.body).bind(['shift+tab'], () => {
+      // First of our elements, release nav.
+      if (this.toggleInput === document.activeElement) {
+        this.toggleInput.blur()
+        eventDispatcher.emit('toggleFocusReleased')
+        return false
+      }
+      // Move to submit, or release if no running task.
+      if (this.description === document.activeElement) {
+        this.toggleSubmit.focus()
+        this.description.blur()
+        return false
+      }
+      // Move to input. 
+      if (this.toggleSubmit === document.activeElement) {
+        this.toggleSubmit.blur()
+        this.toggleInput.focus()
+        return false
+      }
+      if (this.currentEntry instanceof Entry) {
+        this.description.focus()
+        eventDispatcher.emit('toggleFocusGrabbed')
+        return false
+      }
+      // Grab focus on input.
+      this.toggleInput.focus()
+      eventDispatcher.emit('toggleFocusGrabbed')
+      return false
+    })
     Mousetrap(document.body).bind('mod+s', () => {
       this.toggle()
       eventDispatcher.emit('toggleFocusGrabbed')
+    })
+    Mousetrap(this.toggleInput).bind('down', () => {
+      TasksList.selectNext()
+    })
+    Mousetrap(this.toggleInput).bind('up', () => {
+      TasksList.selectPrevious()
+    })
+    Mousetrap(this.toggleInput).bind('esc', () => {
+      TasksList.disable()
+    })
+    Mousetrap(this.toggleInput).bind('enter', () => {
+      TasksList.getSelection()
     })
   }
   private render() {
     document.body.prepend(this.formShadow)
     document.body.prepend(this.form)
+    TasksList.render(this.toggleInput)
     setTimeout(this.makeSticky.bind(this), 0)
   }
 
@@ -94,9 +135,7 @@ class Toggle {
     toggleInput.setAttribute('type', 'text')
     toggleInput.setAttribute('name', 'activity')
     toggleInput.setAttribute('id', 'activity')
-    toggleInput.setAttribute('list', TasksList.getId())
     toggleInput.setAttribute('placeholder', 'Lets get this done')
-    TasksList.render()
     return toggleInput
   }
 
@@ -159,6 +198,7 @@ class Toggle {
     return form
   }
   private toggle() {
+    TasksList.disable()
     let val = this.toggleInput.value.toString()
     this.stop()
     this.description.value = ''
@@ -169,7 +209,7 @@ class Toggle {
     if (val.length) {
       this.start(val)
       this.description.focus()
-    } 
+    }
     this.toggleCurrent()
     this.toggleSubmitText()
   }
