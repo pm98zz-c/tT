@@ -8,6 +8,7 @@ html, body, #toggle {
   a {
     color: lightblue;
   }
+  .entry-day h2.selected,
   .entry.selected {
     background: #444;
   }

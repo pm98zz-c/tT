@@ -21,5 +21,11 @@ class Utils {
     textArea.style.height = 'auto';
     textArea.style.height = textArea.scrollHeight + 'px';
   }
+  public static flicker(){
+    document.body.classList.add('flicker')
+    setTimeout(()=>{
+      document.body.classList.remove('flicker')
+    }, 90)
+  }
 }
 export default Utils

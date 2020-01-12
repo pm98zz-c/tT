@@ -5,7 +5,7 @@ import EntryUI from './EntryUI'
 const Mousetrap = require('mousetrap')
 class EntriesList {
 
-  protected entries: Array<EntryUI> = []
+  private entries: Array<EntryUI> = []
   public constructor() {
     // We'll delete entries older than a month.
     let before = new Date()
@@ -14,7 +14,7 @@ class EntriesList {
       let entry = new Entry()
       // Delete old entries.
       entry.load(uuid)
-      if(entry.getEnd() < before){
+      if (entry.getEnd() < before) {
         entry.delete()
       } else {
         this.entries[uuid] = new EntryUI(entry)
@@ -23,16 +23,15 @@ class EntriesList {
     eventDispatcher.on('toggleLoaded', () => {
       this.render()
       this.attachEvents()
-
     })
   }
 
-  protected render() {
+  private render() {
     Object.values(this.entries).forEach(ui => {
       ui.render()
     })
   }
-  protected attachEvents() {
+  private attachEvents() {
     eventDispatcher.addListener('entrySaved', (uuid: any) => {
       let entry = new Entry()
       entry.load(uuid)
@@ -44,16 +43,22 @@ class EntriesList {
       delete (this.entries[uuid])
     })
     eventDispatcher.addListener('toggleFocusReleased', () => {
-      this.selectNext()
+      this.selectNextEntry()
     })
     eventDispatcher.addListener('toggleFocusGrabbed', () => {
       this.unSelect()
     })
     Mousetrap.bind(['down', 'j'], () => {
-      this.selectNext()
+      this.selectNextEntry()
     })
     Mousetrap.bind(['up', 'k'], () => {
-      this.selectPrevious()
+      this.selectPreviousEntry()
+    })
+    Mousetrap.bind(['right', 'h'], () => {
+      this.selectNextEntryDay()
+    })
+    Mousetrap.bind(['left', 'l'], () => {
+      this.selectPreviousEntryDay()
     })
     Mousetrap.bind('space', () => {
       this.triggerEdit()
@@ -64,8 +69,20 @@ class EntriesList {
         link.click()
       }
     })
+    Mousetrap.bind('ctrl+c', () => {
+      let selected: HTMLAnchorElement | null = document.body.querySelector('.entry.selected')
+      if (null === selected || null === selected.parentElement) {
+        return true
+      }
+      let dayHeader = selected.parentElement.querySelector('h2')
+      if (null === dayHeader) {
+        return true
+      }
+      dayHeader.click()
+      return false
+    })
   }
-  protected triggerEdit() {
+  private triggerEdit() {
     let selected: HTMLDivElement | null = document.querySelector('.entry.selected')
     if (selected === null) {
       return;
@@ -73,59 +90,80 @@ class EntriesList {
     this.unSelect()
     selected.click()
   }
-  protected unSelect() {
+  private unSelect() {
     Mousetrap.unbind('enter')
-    let selected = document.querySelector('.entry.selected')
+    let selected = document.querySelector('.selected')
     if (selected === null) {
       return
     }
     selected.classList.remove('selected')
   }
-  protected hasSelectedEntry(): boolean {
+  private hasSelectedEntry(): boolean {
     let selected = document.querySelector('.entry.selected')
     if (selected === null) {
       return false
     }
     return true
   }
-  protected selectNext() {
-    let entries = document.getElementsByClassName('entry')
+  private selectNext(entries: NodeList) {
     if (entries.length < 1) {
       return
     }
     for (let i = 0; i < entries.length; i++) {
-      if (entries[i].classList.contains('selected')) {
-        entries[i].classList.remove('selected')
-        if (entries[i + 1] instanceof Element) {
-          return this.selectEntry(entries[i + 1])
+      let entry = entries[i]
+      if (entry instanceof HTMLElement && entry.classList.contains('selected')) {
+        entry.classList.remove('selected')
+        let next = entries[i + 1]
+        if (next instanceof Element) {
+          return this.selectEntry(next)
         }
       }
     }
-    return this.selectEntry(entries[0])
+    return this.selectEntry(<Element>entries[0])
   }
-  protected selectEntry(entry: Element) {
+  private selectNextEntry() {
+    let entries = document.querySelectorAll('.entry')
+    return this.selectNext(entries)
+  }
+  private selectNextEntryDay() {
+    let entries = document.querySelectorAll('.entry:first-of-type')
+    return this.selectNext(entries)
+  }
+  private selectPrevious(entries: NodeList) {
+    if (entries.length < 1) {
+      return
+    }
+    for (let i = 0; i < entries.length; i++) {
+      let entry = entries[i]
+      if (entry instanceof HTMLElement && entry.classList.contains('selected')) {
+        entry.classList.remove('selected')
+        let previous = entries[i - 1]
+        if (previous instanceof Element) {
+          return this.selectEntry(previous)
+        }
+      }
+    }
+    return this.selectEntry(<Element>entries[entries.length - 1])
+  }
+  private selectPreviousEntry() {
+    let entries = document.querySelectorAll('.entry')
+    return this.selectPrevious(entries)
+  }
+  private selectPreviousEntryDay() {
+    let entries = document.querySelectorAll('.entry:first-of-type')
+    return this.selectPrevious(entries)
+  }
+  private selectEntry(entry: Element) {
+    this.unSelect()
     entry.classList.add('selected')
+    entry.scrollIntoView({ block: "center" })
     Mousetrap.bind('enter', () => {
       this.triggerStartTask()
       return false
     })
   }
-  protected selectPrevious() {
-    let entries = document.getElementsByClassName('entry')
-    if (entries.length < 1) {
-      return
-    }
-    for (let i = 0; i < entries.length; i++) {
-      if (entries[i].classList.contains('selected')) {
-        entries[i].classList.remove('selected')
-        if (entries[i - 1] instanceof Element) {
-          return this.selectEntry(entries[i - 1])
-        }
-      }
-    }
-    return this.selectEntry(entries[entries.length - 1])
-  }
-  protected triggerStartTask() {
+
+  private triggerStartTask() {
     let selected = document.querySelector('.entry.selected')
     if (null !== selected) {
       let task: HTMLParagraphElement | null = selected.querySelector('p.entry-task')

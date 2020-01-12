@@ -1,6 +1,8 @@
 import Entry from '../Entry/Entry'
 import EntryEdit from './EntryEdit'
+import EntryExport from './EntryExport'
 import eventDispatcher from '../../common/Event'
+import Utils from '../Utils'
 class EntryUI {
 
   protected entry: Entry
@@ -59,7 +61,28 @@ class EntryUI {
   protected getDayHeaderElement(): HTMLHeadingElement {
     let header = document.createElement('h2')
     header.innerText = this.entry.getEnd().toLocaleDateString()
+    header.setAttribute('title', 'Copy diary to clipboard (ctrl+C)')
+    header.addEventListener('click',()=>{
+      Utils.flicker()
+      this.exportDay(header)
+    })
     return header
+  }
+  protected exportDay(header: HTMLHeadingElement){
+    let output = ''
+    let day = header.parentElement
+    if(day === null){
+      return
+    }
+    let entries = day.querySelectorAll('.entry')
+    for(let i= 0; i < entries.length; i++){
+      let id = entries[i].getAttribute('id')
+      if (id !== null){
+        let entry = new EntryExport(id)
+        output += entry.getOutput()
+      }
+    }
+    navigator.clipboard.writeText(output)
   }
   protected getEntryDurationElement(): HTMLParagraphElement {
     let duration = this.entry.getEnd().getTime() - this.entry.getStart().getTime()
