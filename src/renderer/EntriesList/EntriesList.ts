@@ -98,13 +98,6 @@ class EntriesList {
     }
     selected.classList.remove('selected')
   }
-  private hasSelectedEntry(): boolean {
-    let selected = document.querySelector('.entry.selected')
-    if (selected === null) {
-      return false
-    }
-    return true
-  }
   private selectNext(entries: NodeList) {
     if (entries.length < 1) {
       return
