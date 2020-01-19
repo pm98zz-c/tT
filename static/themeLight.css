@@ -22,3 +22,9 @@ a {
 #current {
   color: #000;
 }
+#task-list {
+  background: #fff;
+}
+#task-list li.selected {
+  background: #eee;
+}
